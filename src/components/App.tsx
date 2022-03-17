@@ -1,10 +1,16 @@
-import { Button } from '@mui/material';
+import { Routes, Route } from 'react-router-dom';
+
+import LoginPage from '../pages/login/LoginPage';
+import { ROUTES } from '../utils/routes';
+
+const Hello = () => <h1>한글폰트 english</h1>;
 
 function App() {
     return (
-        <div>
-            <Button variant='contained'>Hello World</Button>
-        </div>
+        <Routes>
+            <Route path={ROUTES.HOME} element={<Hello />} />
+            <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+        </Routes>
     );
 }
 
