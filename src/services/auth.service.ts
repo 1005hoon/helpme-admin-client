@@ -4,6 +4,7 @@ import {
     GoogleLoginResponseOffline,
 } from 'react-google-login';
 import IUser from '../utils/interfaces/user.interface';
+import errorHandler from '../utils/errorHandler';
 
 export class AuthService {
     private readonly request = request;
@@ -28,13 +29,9 @@ export class AuthService {
             );
 
             return data;
-        } catch (error) {
-            console.error(error);
-            alert(
-                `네트워크 오류가 발생했습니다. 담당자에게 노티해주세요! ${JSON.stringify(
-                    error
-                )}`
-            );
+        } catch (error: any) {
+            const errorMessage = errorHandler(error);
+            alert(errorMessage);
             return null;
         }
     }
@@ -43,13 +40,9 @@ export class AuthService {
         try {
             const { data } = await this.request<IUser>('GET', '/auth');
             return data;
-        } catch (error) {
-            console.error(error);
-            alert(
-                `네트워크 오류가 발생했습니다. 담당자에게 노티해주세요! ${JSON.stringify(
-                    error
-                )}`
-            );
+        } catch (error: any) {
+            const errorMessage = errorHandler(error);
+            alert(errorMessage);
             return null;
         }
     }

@@ -1,46 +1,49 @@
-import { Button, Container, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import GoogleLogin, {
     GoogleLoginResponse,
     GoogleLoginResponseOffline,
 } from 'react-google-login';
-
-import React from 'react';
-import request from '../../utils/request';
+import { useNavigate } from 'react-router-dom';
+import React, { useCallback, useEffect } from 'react';
 import IUser from '../../utils/interfaces/user.interface';
+import { AuthService } from '../../services/auth.service';
 
-interface LoginPageProps {}
+interface LoginPageProps {
+    user: IUser | null;
+    authService: AuthService;
+    setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
+}
 
-const LoginPage: React.FC<LoginPageProps> = (props) => {
+const LoginPage: React.FC<LoginPageProps> = ({
+    user,
+    authService,
+    setUser,
+}) => {
+    const navigate = useNavigate();
+
     const GOOGLE_AUTH_CLIENT_ID =
         process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID || '';
 
-    const onLoginSuccess = async (
-        googleLoginResponse: GoogleLoginResponse | GoogleLoginResponseOffline
-    ) => {
-        if (!(googleLoginResponse as GoogleLoginResponse).accessToken) {
-            console.error(googleLoginResponse);
-            return;
-        }
+    const onLoginSuccess = useCallback(
+        async (res: GoogleLoginResponse | GoogleLoginResponseOffline) => {
+            const user = await authService.loginWithGoogle(res);
+            setUser(user);
+        },
+        [authService, setUser]
+    );
 
-        try {
-            const { data } = await request<IUser>(
-                'POST',
-                '/auth/oauth/google',
-                null,
-                {
-                    token: (googleLoginResponse as GoogleLoginResponse)
-                        .accessToken,
-                }
-            );
-        } catch (error) {
-            console.error(error);
-            alert(
-                `네트워크 오류가 발생했습니다. 담당자에게 노티해주세요! ${JSON.stringify(
-                    error
-                )}`
-            );
+    const isLoggedIn = useCallback(async () => {
+        const user = await authService.authenticate();
+
+        if (user) {
+            setUser(user);
+            navigate('/');
         }
-    };
+    }, [authService, setUser, navigate]);
+
+    useEffect(() => {
+        isLoggedIn();
+    }, [user, isLoggedIn]);
 
     return (
         <Grid
