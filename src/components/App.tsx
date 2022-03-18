@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import Home from '../pages/dashboard/Home';
 
 import LoginPage from '../pages/login/LoginPage';
 import { AuthService } from '../services/auth.service';
 import IUser from '../utils/interfaces/user.interface';
 import { ROUTES } from '../utils/routes';
-import PrivateRoute from './utils/PrivateRoute';
 
 const Hello = () => <h1>한글폰트 english</h1>;
 
@@ -26,10 +26,19 @@ function App() {
                     />
                 }
             />
+
             <Route
                 path={ROUTES.HOME}
-                element={<PrivateRoute user={user} component={Hello} />}
-            />
+                element={
+                    <Home
+                        user={user}
+                        setUser={setUser}
+                        authService={authService}
+                    />
+                }
+            >
+                <Route path='test' element={<Hello />} />
+            </Route>
         </Routes>
     );
 }
