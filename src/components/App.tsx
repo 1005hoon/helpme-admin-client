@@ -28,7 +28,7 @@ function App() {
             />
 
             <Route
-                path={ROUTES.HOME}
+                path='*'
                 element={
                     <Home
                         user={user}

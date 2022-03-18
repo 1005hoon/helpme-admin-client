@@ -3,10 +3,11 @@ import GoogleLogin, {
     GoogleLoginResponse,
     GoogleLoginResponseOffline,
 } from 'react-google-login';
-import { useNavigate } from 'react-router-dom';
-import React, { useCallback, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useCallback } from 'react';
 import IUser from '../../utils/interfaces/user.interface';
 import { AuthService } from '../../services/auth.service';
+import { ROUTES } from '../../utils/routes';
 
 interface LoginPageProps {
     user: IUser | null;
@@ -14,11 +15,8 @@ interface LoginPageProps {
     setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
 }
 
-const LoginPage: React.FC<LoginPageProps> = ({
-    user,
-    authService,
-    setUser,
-}) => {
+const LoginPage: React.FC<LoginPageProps> = ({ authService, setUser }) => {
+    const location = useLocation();
     const navigate = useNavigate();
 
     const GOOGLE_AUTH_CLIENT_ID =
@@ -28,22 +26,10 @@ const LoginPage: React.FC<LoginPageProps> = ({
         async (res: GoogleLoginResponse | GoogleLoginResponseOffline) => {
             const user = await authService.loginWithGoogle(res);
             setUser(user);
+            navigate((location.state as { from: string }).from || ROUTES.HOME);
         },
         [authService, setUser]
     );
-
-    const isLoggedIn = useCallback(async () => {
-        const user = await authService.authenticate();
-
-        if (user) {
-            setUser(user);
-            navigate('/');
-        }
-    }, [authService, setUser, navigate]);
-
-    useEffect(() => {
-        isLoggedIn();
-    }, [user, isLoggedIn]);
 
     return (
         <Grid
