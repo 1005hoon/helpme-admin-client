@@ -9,11 +9,9 @@ const errorHandler = (error: any) => {
     }
 
     if (error.request) {
-        console.error(`Error: ${JSON.stringify(error)}`);
         return '네트워크 요청에 실패했습니다. 담당자에게 문의주세요.';
     }
 
-    console.error(`Error: ${error.message}`);
     return error.message;
 };
 

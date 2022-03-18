@@ -42,7 +42,7 @@ export class AuthService {
             return data;
         } catch (error: any) {
             const errorMessage = errorHandler(error);
-            alert(errorMessage);
+            console.error(errorMessage);
             return null;
         }
     }
