@@ -3,12 +3,12 @@ export enum AlertActionType {
     CLOSE_ALERT_MESSAGE = 'ALERT_CLOSE_ALERT_MESSAGE',
 }
 
-export interface IOpenAlertMessage {
+interface IOpenAlertMessage {
     type: AlertActionType.OPEN_ALERT_MESSAGE;
     payload: string;
 }
 
-export interface ICloseAlertMessage {
+interface ICloseAlertMessage {
     type: AlertActionType.CLOSE_ALERT_MESSAGE;
 }
 

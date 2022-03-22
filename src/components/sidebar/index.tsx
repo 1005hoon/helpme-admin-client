@@ -1,14 +1,5 @@
-import {
-    Box,
-    Drawer,
-    List,
-    ListItem,
-    ListItemText,
-    Toolbar,
-} from '@mui/material';
+import { Box, Drawer, Toolbar } from '@mui/material';
 import React from 'react';
-import { ROUTES } from '../../utils/routes';
-import { NavLink } from 'react-router-dom';
 import NavList from './NavList';
 
 interface SidebarProps {}

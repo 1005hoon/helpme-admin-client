@@ -1,35 +1,26 @@
-import { Button, Grid, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import GoogleLogin, {
     GoogleLoginResponse,
     GoogleLoginResponseOffline,
 } from 'react-google-login';
-import { useLocation, useNavigate } from 'react-router-dom';
-import React, { useCallback } from 'react';
-import IUser from '../../utils/interfaces/user.interface';
-import { AuthService } from '../../services/auth.service';
-import { ROUTES } from '../../utils/routes';
+import { Button, Grid, Typography } from '@mui/material';
 
-interface LoginPageProps {
-    user: IUser | null;
-    authService: AuthService;
-    setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
-}
+import { useActions } from '../../hooks/useActions';
 
-const LoginPage: React.FC<LoginPageProps> = ({ authService, setUser }) => {
-    const location = useLocation();
+interface LoginPageProps {}
+
+const LoginPage: React.FC<LoginPageProps> = (props) => {
     const navigate = useNavigate();
+    const { onLogin } = useActions();
 
     const GOOGLE_AUTH_CLIENT_ID =
         process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID || '';
 
-    const onLoginSuccess = useCallback(
-        async (res: GoogleLoginResponse | GoogleLoginResponseOffline) => {
-            const user = await authService.loginWithGoogle(res);
-            setUser(user);
-            navigate((location.state as { from: string }).from || ROUTES.HOME);
-        },
-        [authService, setUser]
-    );
+    const onLoginSuccess = async (
+        res: GoogleLoginResponse | GoogleLoginResponseOffline
+    ) => {
+        onLogin(res, navigate);
+    };
 
     return (
         <Grid

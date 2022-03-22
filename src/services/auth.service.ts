@@ -13,37 +13,23 @@ export class AuthService {
         googleLoginResponse: GoogleLoginResponse | GoogleLoginResponseOffline
     ) {
         if (!(googleLoginResponse as GoogleLoginResponse).accessToken) {
-            console.error(googleLoginResponse);
-            return null;
+            throw new Error(googleLoginResponse.code);
         }
 
-        try {
-            const { data } = await request<IUser>(
-                'POST',
-                '/auth/oauth/google',
-                null,
-                {
-                    token: (googleLoginResponse as GoogleLoginResponse)
-                        .accessToken,
-                }
-            );
+        const { data } = await request<IUser>(
+            'POST',
+            '/auth/oauth/google',
+            null,
+            {
+                token: (googleLoginResponse as GoogleLoginResponse).accessToken,
+            }
+        );
 
-            return data;
-        } catch (error: any) {
-            const errorMessage = errorHandler(error);
-            alert(errorMessage);
-            return null;
-        }
+        return data;
     }
 
     async authenticate() {
-        try {
-            const { data } = await this.request<IUser>('GET', '/auth');
-            return data;
-        } catch (error: any) {
-            const errorMessage = errorHandler(error);
-            console.error(errorMessage);
-            return null;
-        }
+        const { data } = await this.request<IUser>('GET', '/auth');
+        return data;
     }
 }
