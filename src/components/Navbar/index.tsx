@@ -7,13 +7,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import IUser from '../../utils/interfaces/user.interface';
 import { Avatar } from '@mui/material';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
-interface NavbarProps {
-    user: IUser | null;
-}
+interface NavbarProps {}
 
 const Navbar: React.FC<NavbarProps> = (props) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const { user } = useTypedSelector((state) => state.user);
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -37,7 +37,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
                 >
                     헬프미 마케팅 | SM 대시보드
                 </Typography>
-                {props.user && (
+                {user && (
                     <div>
                         <IconButton
                             size='large'
@@ -47,7 +47,7 @@ const Navbar: React.FC<NavbarProps> = (props) => {
                             onClick={handleMenu}
                             color='inherit'
                         >
-                            <Avatar src={props.user.thumbnail_url} />
+                            <Avatar src={user.thumbnail_url} />
                         </IconButton>
                         <Menu
                             id='menu-appbar'

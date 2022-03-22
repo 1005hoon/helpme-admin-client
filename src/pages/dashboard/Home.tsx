@@ -4,14 +4,12 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/navbar';
 import Sidebar from '../../components/sidebar';
 import { useActions } from '../../hooks/useActions';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
     const navigate = useNavigate();
     const { authenticate } = useActions();
-    const { user } = useTypedSelector((state) => state.user);
 
     useEffect(() => {
         authenticate(navigate);
@@ -20,7 +18,7 @@ const Home: React.FC<HomeProps> = () => {
     return (
         <div>
             <Box sx={{ display: 'flex' }}>
-                <Navbar user={user} />
+                <Navbar />
                 <Sidebar />
                 <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
                     <Toolbar />
