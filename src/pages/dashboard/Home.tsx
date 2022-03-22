@@ -1,7 +1,7 @@
 import { Box, Toolbar } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import Navbar from '../../components/Navbar';
+import Navbar from '../../components/navbar';
 import Sidebar from '../../components/sidebar';
 import { AuthService } from '../../services/auth.service';
 import IUser from '../../utils/interfaces/user.interface';

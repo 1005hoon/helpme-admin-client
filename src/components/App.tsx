@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from '../pages/dashboard/Home';
 
-import LoginPage from '../pages/login/LoginPage';
+import LoginPage from '../pages/auth/LoginPage';
 import { AuthService } from '../services/auth.service';
 import IUser from '../utils/interfaces/user.interface';
 import { ROUTES } from '../utils/routes';
